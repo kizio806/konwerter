@@ -120,10 +120,12 @@ def main():
     console.print(Panel.fit("[bold cyan]🎵 Downloader: YouTube & Spotify[/bold cyan]"))
 
     # Weryfikacja obecności narzędzi
-    for cmd in ["yt-dlp", "ffmpeg"]:
+    # Weryfikacja obecności narzędzi
+    for cmd in ["yt-dlp", "ffmpeg", "spotdl"]:
         if not shutil.which(cmd):
             console.print(f"[bold red]❌ Nie znaleziono: {cmd}. Zainstaluj i dodaj do PATH.[/bold red]")
             return
+
 
     source = questionary.select(
         "Z jakiego źródła chcesz pobierać?",
