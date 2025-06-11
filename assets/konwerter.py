@@ -158,10 +158,11 @@ def main():
         quality = questionary.select(
             "Wybierz jakość:",
             choices=[
-                ("🎵 Tylko dźwięk (MP3)", True),
-                ("📺 Wideo (najlepsza jakość)", False)
+                {"name": "🎵 Tylko dźwięk (MP3)", "value": True},
+                {"name": "📺 Wideo (najlepsza jakość)", "value": False}
             ]
         ).ask()
+
 
         download_youtube(links, count, audio_only=quality, output_path=output_path)
 
