@@ -1,45 +1,62 @@
 @echo off
 setlocal
 
-REM Sprawdzenie Pythona
+REM --- Sprawdź, czy Python jest zainstalowany ---
 python --version >nul 2>&1
-if errorlevel 1 (
-    echo Python nie jest zainstalowany lub nie jest w PATH.
-    echo Pobierz i zainstaluj Python 3.6 lub wyzszy z: https://www.python.org/downloads/
-    pause
-    exit /b 1
-)
+if ERRORLEVEL 1 (
+    echo Python nie jest zainstalowany. Pobieram instalator...
 
-REM Sprawdzenie wersji Pythona
-for /f "tokens=2 delims= " %%a in ('python --version') do set PYVER=%%a
-for /f "tokens=1,2 delims=." %%a in ("%PYVER%") do (
-    set PYMAJOR=%%a
-    set PYMINOR=%%b
-)
+    set "PYTHON_INSTALLER=python-3.11.4-amd64.exe"
+    if not exist "%PYTHON_INSTALLER%" (
+        echo Pobieranie %PYTHON_INSTALLER% ...
+        powershell -Command "Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.11.4/%PYTHON_INSTALLER% -OutFile %PYTHON_INSTALLER%"
+    ) else (
+        echo Instalator Pythona juz jest lokalnie.
+    )
 
-if %PYMAJOR% LSS 3 (
-    echo Wymagana jest wersja Pythona 3.6 lub wyzsza.
-    pause
-    exit /b 1
-) else if %PYMAJOR%==3 if %PYMINOR% LSS 6 (
-    echo Wymagana jest wersja Pythona 3.6 lub wyzsza.
-    pause
-    exit /b 1
-)
+    echo Instalacja Pythona...
+    start /wait "" "%PYTHON_INSTALLER%" /quiet InstallAllUsers=1 PrependPath=1 Include_pip=1
 
-REM Sprawdzenie yt-dlp
-python -m yt_dlp --version >nul 2>&1
-if errorlevel 1 (
-    echo Pakiet yt-dlp nie jest zainstalowany. Instalowanie...
-    python -m pip install --upgrade yt-dlp
-    if errorlevel 1 (
-        echo Nie udalo sie zainstalowac yt-dlp. Sprawdz polaczenie internetowe i sprobuj ponownie.
+    python --version >nul 2>&1
+    if ERRORLEVEL 1 (
+        echo Nie udało się zainstalować Pythona, przerwanie.
         pause
         exit /b 1
     )
+) else (
+    echo Python jest zainstalowany.
 )
 
-REM Uruchomienie skryptu
-python assets\konwerter.py
+REM --- Zainstaluj potrzebne pakiety Python ---
+echo Instalacja wymaganych pakietow Python...
+python -m pip install --upgrade pip
+python -m pip install yt-dlp spotdl questionary rich
 
+REM --- Pobierz ffmpeg (wersja Windows) jeśli brak ---
+if not exist ffmpeg\bin\ffmpeg.exe (
+    echo Pobieram ffmpeg...
+    powershell -Command "Invoke-WebRequest -Uri https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip -OutFile ffmpeg.zip"
+
+    echo Rozpakowywanie ffmpeg...
+    powershell -Command "Expand-Archive -Path ffmpeg.zip -DestinationPath ffmpeg"
+
+    del ffmpeg.zip
+
+    REM Przenies pliki bin do ffmpeg\
+    for /d %%d in (ffmpeg\ffmpeg-*) do (
+        move /y "%%d\bin\*" ffmpeg\
+        rmdir /s /q "%%d"
+    )
+) else (
+    echo ffmpeg juz jest pobrany.
+)
+
+REM --- Dodaj lokalny ffmpeg do PATH tymczasowo ---
+set "PATH=%CD%\ffmpeg;%PATH%"
+
+REM --- Uruchom skrypt Python ---
+echo Uruchamiam program Python...
+python "assets\konwerter.py"
+
+pause
 endlocal

@@ -47,12 +47,16 @@ def convert_to_mp3(file_path):
         "-b:a", "192k",
         str(mp3_path)
     ]
-    result = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Dodajemy capture_output i text=True, żeby złapać output
+    result = subprocess.run(command, capture_output=True, text=True)
+    
     if result.returncode == 0:
         file_path.unlink()  # usuń oryginalny .m4a po konwersji
         return mp3_path
     else:
         console.print(f"[red]❌ Błąd konwersji: {file_path}[/red]")
+        console.print(f"[red]stderr:\n{result.stderr}[/red]")
+        console.print(f"[red]stdout:\n{result.stdout}[/red]")
         return file_path
 
 
@@ -68,7 +72,11 @@ def download_youtube(links, count, audio_only, output_path):
             "-o", output_template,
             link
         ]
-        subprocess.run(command)
+        result = subprocess.run(command, capture_output=True, text=True)
+        if result.returncode != 0:
+            console.print(f"[red]Błąd pobierania yt-dlp dla linku {link}[/red]")
+            console.print(f"[red]stderr:\n{result.stderr}[/red]")
+            console.print(f"[red]stdout:\n{result.stdout}[/red]")
 
         # Konwersja do MP3 jeśli tylko audio
         if audio_only:
@@ -80,9 +88,10 @@ def download_youtube(links, count, audio_only, output_path):
                 downloaded_file = Path(result.stdout.strip())
                 if downloaded_file.exists() and downloaded_file.suffix.lower() == ".m4a":
                     convert_to_mp3(downloaded_file)
+                else:
+                    console.print(f"[yellow]Nie znaleziono pliku do konwersji: {downloaded_file}[/yellow]")
             except Exception as e:
                 console.print(f"[red]Błąd przy konwersji pliku: {e}[/red]")
-
 
 def download_spotify(links, output_path):
     os.chdir(output_path)
