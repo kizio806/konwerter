@@ -1,0 +1,9 @@
+# Ignoruj pliki tymczasowe i konfiguracyjne
+*.log
+*.tmp
+
+# Ignoruj folder build/
+ffmpeg/
+ffmpeg.zip
+# Ignoruj konkretne pliki
+.env
