@@ -29,7 +29,7 @@ pip install questionary rich
 1. Uruchom skrypt:
 
 ```bash
-python downloader.py
+python konwerter.py
 ```
 
 2. Wybierz źródło (YouTube / Spotify)  
@@ -64,7 +64,7 @@ https://open.spotify.com/track/yyyy
 ## 🧑‍💻 Autor
 
 **Nick:** kizio806  
-**Discord:** _kizio_  
+**Discord:** `_kizio_`
 **GitHub:** [https://github.com/kizio806](https://github.com/kizio806)
 
 
