@@ -63,9 +63,10 @@ https://open.spotify.com/track/yyyy
 
 ## 🧑‍💻 Autor
 
-**Nick:** kizio806
-**Discord:** _kizio_
+**Nick:** kizio806  
+**Discord:** _kizio_  
 **GitHub:** [https://github.com/kizio806](https://github.com/kizio806)
+
 
 Jeśli masz pytania, propozycje zmian lub chcesz współtworzyć projekt — śmiało się odezwij!
 
