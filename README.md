@@ -63,9 +63,9 @@ https://open.spotify.com/track/yyyy
 
 ## 🧑‍💻 Autor
 
-**Nazwa/Nick:** devMati  
-**Discord:** @devmati  
-**GitHub:** [https://github.com/devMati](https://github.com/devMati)
+**Nick:** kizio806
+**Discord:** _kizio_
+**GitHub:** [https://github.com/kizio806](https://github.com/kizio806)
 
 Jeśli masz pytania, propozycje zmian lub chcesz współtworzyć projekt — śmiało się odezwij!
 
@@ -92,4 +92,4 @@ Jeśli ten skrypt Ci pomógł, zostaw ⭐ na GitHubie lub przekaż opinię. Moż
 ## 📬 Kontakt i społeczność
 
 💬 Dołącz do mojego **serwera Discord**:  
-[discord.gg/devmati](https://discord.gg/devmati)
+[discord.gg/blintzstore](https://discord.com/invite/M9thr49cFY)
